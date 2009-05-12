@@ -1,6 +1,6 @@
 %w{"libmozjs-dev", "libicu-dev", "libcurl4-openssl-dev", "erlang"}.each {|pkg| package(pkg) }
 
-case platform
+case node[:platform]
 when "debian", "ubuntu"
   script "install_couchdb" do
     interpreter "bash"
@@ -10,7 +10,7 @@ when "debian", "ubuntu"
       wget http://mirrors.24-7-solutions.net/pub/apache/couchdb/0.9.0/apache-couchdb-0.9.0.tar.gz  
       tar zxvf apache-couchdb-0.9.0.tar.gz  
       cd apache-couchdb-0.9.0  
-      ./configure && make && sudo make install
+      ./configure && make && make install
     EOH
   end
 end  

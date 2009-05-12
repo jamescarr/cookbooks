@@ -7,7 +7,6 @@ when "debian", "ubuntu"
     user "root"
     cwd "/tmp"
     code <<-EOH
-      apt-get update
       wget http://mirrors.24-7-solutions.net/pub/apache/couchdb/0.9.0/apache-couchdb-0.9.0.tar.gz  
       tar zxvf apache-couchdb-0.9.0.tar.gz  
       cd apache-couchdb-0.9.0  

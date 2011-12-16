@@ -77,7 +77,7 @@ if [ -n "$int_warn" -a -n "$int_crit" ]; then
     fi
 
   elif (( $err == 2 )); then
-    
+
     if [ "$perform" = "yes" ]; then
       echo "MEM CRITICAL - $OUTPUTP"
       exit "$err"
@@ -87,12 +87,12 @@ if [ -n "$int_warn" -a -n "$int_crit" ]; then
     fi
 
   fi
-  
+
 else
-  
+
   echo "no output from plugin"
   exit 3
 
 fi
-exit  
+exit
 

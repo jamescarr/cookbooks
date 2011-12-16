@@ -34,7 +34,7 @@ template "/etc/ldap.conf" do
   mode 0644
   owner "root"
   group "root"
-end    
+end
 
 template "/etc/ldap/ldap.conf" do
   source "ldap-ldap.conf.erb"

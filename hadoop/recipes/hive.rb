@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hadoop
-# Recipe:: hive 
+# Recipe:: hive
 #
 # Copyright 2009, Opscode, Inc.
 #

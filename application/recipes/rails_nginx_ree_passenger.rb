@@ -78,7 +78,7 @@ search(:apps) do |app|
       mode '0755'
       recursive true
     end
-    
+
     directory "#{app['deploy_to']}/shared/log" do
       owner app['owner']
       group app['group']
@@ -134,7 +134,7 @@ search(:apps) do |app|
           service "apache" do action :restart; end
         end
       end
-      symlink_before_migrate({ 
+      symlink_before_migrate({
         "database.yml" => "config/database.yml",
         "memcached.yml" => "config/memcached.yml"
       })

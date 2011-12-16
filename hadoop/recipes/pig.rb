@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hadoop
-# Recipe:: pig 
+# Recipe:: pig
 #
 # Copyright 2009, Opscode, Inc.
 #

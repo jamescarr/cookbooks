@@ -46,7 +46,7 @@ remote_directory "/etc/openvpn/easy-rsa" do
   group "root"
   mode 0700
 end
-  
+
 template "/etc/openvpn/server.up.sh" do
   source "server.up.sh.erb"
   owner "root"

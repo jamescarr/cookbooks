@@ -32,7 +32,7 @@ directory "#{node[:gem_server][:directory]}/gems" do
 end
 
 cron "mirror_rubyforge" do
-  command "rsync -av rsync://master.mirror.rubyforge.org/gems/ #{node[:gem_server][:rf_directory]}/gems && gem generate_index -d #{node[:gem_server][:rf_directory]}" 
+  command "rsync -av rsync://master.mirror.rubyforge.org/gems/ #{node[:gem_server][:rf_directory]}/gems && gem generate_index -d #{node[:gem_server][:rf_directory]}"
   hour "2"
   minute "0"
 end

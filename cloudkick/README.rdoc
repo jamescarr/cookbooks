@@ -33,7 +33,7 @@ Assuming you name the role 'cloudkick', here is the required json:
 
 If you want Cloudkick installed everywhere, we recommend you just add the cloudkick attributes to a base role.
 
-All of the data about the node from Cloudkick is available in node[:cloudkick] - for example: 
+All of the data about the node from Cloudkick is available in node[:cloudkick] - for example:
 
   "cloudkick": {
     "oauth_key": "YOUR KEY HERE",
@@ -67,7 +67,7 @@ Of particular interest is the inclusion of the Cloudkick tags.  This will allow 
     "start": 0,
     "total": 1
   }
-  
+
 We automatically add a tag for each Role applied to your node.  For example, if your node had a run list of:
 
   "run_list": [ "role[webserver]", "role[database_master]" ]

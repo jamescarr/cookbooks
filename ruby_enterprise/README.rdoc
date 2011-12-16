@@ -6,7 +6,7 @@ Installs Ruby Enterprise Edition (REE) from Phusion.
 
 Opscode's build-essential cookbook to get a compiler and associated files installed.
 
-= ATTRIBUTES: 
+= ATTRIBUTES:
 
 * ruby_enterprise[:install_path] - Location to install REE. Default /opt/ruby-enterprise
 * ruby_enterprise[:version] - Version-datestamp to use. Default 1.8.6-20090610. May lag behind latest REE release.

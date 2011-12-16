@@ -19,7 +19,7 @@
 case node[:platform]
 when "debian", "ubuntu"
   package "git-core"
-else 
+else
   package "git"
 end
 

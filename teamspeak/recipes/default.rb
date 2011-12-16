@@ -47,7 +47,7 @@ bash "install tsdisplay" do
   cwd "/srv/www/tsdisplay"
   code <<-EOH
 wget http://softlayer.dl.sourceforge.net/sourceforge/tsdisplay/TeamspeakDisplay-PR3.zip
-unzip TeamSpeakDisplay-PR3.zip  
+unzip TeamSpeakDisplay-PR3.zip
 EOH
   not_if { File.exists?("/srv/www/tsdisplay/TeamspeakDisplay-PR3.zip") }
 end

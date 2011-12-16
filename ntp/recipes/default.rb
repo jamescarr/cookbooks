@@ -17,7 +17,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-case node[:platform] 
+case node[:platform]
 when "ubuntu","debian"
   package "ntpdate" do
     action :install

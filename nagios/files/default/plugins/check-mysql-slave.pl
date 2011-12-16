@@ -1,17 +1,17 @@
 #!/usr/bin/env perl
 
-# 
+#
 # mysql-slave-check.pl
-# 
-# Nagios script for checking the replication 
-# status of a slave MySQL server. 
-# 
+#
+# Nagios script for checking the replication
+# status of a slave MySQL server.
+#
 # Michal Ludvig <michal@logix.cz> (c) 2006
 #               http://www.logix.cz/michal
-# 
+#
 # Run with --help to get some hints about usage or
 # look at subroutine usage() near the end of this file.
-# 
+#
 
 use strict;
 use DBI;
@@ -87,7 +87,7 @@ $dbh->disconnect();
 &nagios_return("OK", "$result->{'Slave_IO_State'}, replicating host $result->{'Master_Host'}:$result->{'Master_Port'}");
 exit 0;
 
-### 
+###
 
 sub nagios_return($$) {
 	my ($ret, $message) = @_;
@@ -108,7 +108,7 @@ sub nagios_return($$) {
 sub usage() {
 	print("
 Nagios script for checking the replication status of a
-slave MySQL server. 
+slave MySQL server.
 
 Michal Ludvig <michal\@logix.cz> (c) 2006
               http://www.logix.cz/michal
@@ -127,14 +127,14 @@ Michal Ludvig <michal\@logix.cz> (c) 2006
   --dbname=<dbname>
                   Name od database to open on connect.
 		  Should normaly not be needed.
-	
+
 	--warn=<seconds> Warning threshold in seconds for Seconds_behind_master variable
 
 	--crit=<seconds> Critical threshold in seconds for Seconds_behind_master variable
 
   --help          Guess what ;-)
 
-The script needs to connect as a MySQL user (say 'monitor') 
+The script needs to connect as a MySQL user (say 'monitor')
 with privilege REPLICATION CLIENT. Use this GRANT
 command to create such a user:
 

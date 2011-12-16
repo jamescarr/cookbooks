@@ -1,6 +1,6 @@
 #!/bin/bash
 for d in `schroot -l | grep -- '-source$'`
-do 
+do
   echo '============================================================'
   echo "Updating: $d"
   schroot -q -c $d -u root -- sh -c \

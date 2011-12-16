@@ -23,7 +23,7 @@ packages = case node[:platform]
   else
     %w{openssh-client openssh-server}
   end
-  
+
 packages.each do |pkg|
   package pkg
 end

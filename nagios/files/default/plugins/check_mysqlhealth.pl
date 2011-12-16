@@ -87,7 +87,7 @@ eval {
             }
             $connections++;
         }
-        
+
     } while ($row);
 };
 
@@ -110,19 +110,19 @@ if ($sql) {
             $sqlResult = join('|', @row);
         }
     };
-    
+
     if ($@) {
         my $status = $@;
         print 'CRITICAL: Error executing statement "' . $sql . '", reason ' . $status . "\n";
         exit 2;
     }
-    
+
 }
 
 # --
 # Cleanup resources
 # --
-$dbh->disconnect();    
+$dbh->disconnect();
 
 # --
 # Check
@@ -156,4 +156,4 @@ if ($sql) {
 print "OK: $statusString\n";
 exit 0;
 
-    
+

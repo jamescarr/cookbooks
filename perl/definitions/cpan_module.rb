@@ -19,7 +19,7 @@
 
 define :cpan_module, :force => nil do
   execute "install-#{params[:name]}" do
-    if params[:force] 
+    if params[:force]
       command "echo force install #{params[:name]} | /usr/bin/cpan"
     else
       command "/usr/local/bin/cpan_install #{params[:name]}"

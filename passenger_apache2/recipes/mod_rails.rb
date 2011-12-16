@@ -31,9 +31,9 @@ if platform?("centos","redhat") and dist_only?
 
   file "#{node[:apache][:dir]}/conf.d/mod_passenger.conf" do
     action :delete
-    backup false 
+    backup false
   end
-else  
+else
   template "#{node[:apache][:dir]}/mods-available/passenger.load" do
     cookbook "passenger_apache2"
     source "passenger.load.erb"

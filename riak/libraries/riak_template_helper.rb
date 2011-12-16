@@ -1,5 +1,5 @@
 module RiakTemplateHelper
-  
+
   #
   # erl_sym?(str)
   #
@@ -9,7 +9,7 @@ module RiakTemplateHelper
   def erl_sym?(str)
     ["storage_backend", "errlog_type"].include?(str)
   end
-  
+
   def erl_prepare(opts)
     opts.inject([]) do |arr, (opt, val)|
       if val.is_a?(String) && !(erl_sym?(opt))
@@ -20,7 +20,7 @@ module RiakTemplateHelper
       arr << "\{#{opt}, #{val_str}\}"
     end
   end
-  
+
   def configify(config)
     core = erl_prepare(config["core"])
     storage_backend_options = erl_prepare(config["kv"].delete("storage_backend_options"))
@@ -28,7 +28,7 @@ module RiakTemplateHelper
     kernel = erl_prepare(config["kernel"])
     sasl_error_logger = erl_prepare(config["sasl"].delete("sasl_error_logger"))
     sasl = erl_prepare(config["sasl"])
-    
+
     {:core => core, :kernel => kernel,
       :kv => kv, :sasl => sasl, :sasl_error_logger => sasl_error_logger,
       :storage_backend_options => storage_backend_options}

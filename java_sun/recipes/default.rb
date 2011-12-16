@@ -25,9 +25,9 @@ java_pkg = value_for_platform(
 )
 
 case node.platform
-when "ubuntu" 
+when "ubuntu"
   include_recipe "apt"
- 
+
   template "/etc/apt/sources.list.d/canonical.com.list" do
     mode "0644"
     source "canonical.com.list.erb"

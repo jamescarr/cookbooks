@@ -1,4 +1,4 @@
-case platform 
+case platform
 when "ubuntu","debian"
   set_unless[:ntp][:service] = "ntp"
 when "redhat","centos","fedora"

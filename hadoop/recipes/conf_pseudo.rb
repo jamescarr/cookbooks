@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: hadoop
-# Recipe:: conf_pseudo 
+# Recipe:: conf_pseudo
 #
 # Copyright 2009, Opscode, Inc.
 #

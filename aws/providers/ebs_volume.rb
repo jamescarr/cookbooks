@@ -74,9 +74,9 @@ action :prune do
     if snapshot[:aws_volume_id] == vol[:aws_id]
       Chef::Log.info "Found old snapshot #{snapshot[:aws_id]} (#{snapshot[:aws_volume_id]}) #{snapshot[:aws_started_at]}"
       old_snapshots << snapshot
-    end 
+    end
   end
-  if old_snapshots.length >= new_resource.snapshots_to_keep 
+  if old_snapshots.length >= new_resource.snapshots_to_keep
     old_snapshots[new_resource.snapshots_to_keep - 1, old_snapshots.length].each do |die|
       Chef::Log.info "Deleting old snapshot #{die[:aws_id]}"
       ec2.delete_snapshot(die[:aws_id])
@@ -224,7 +224,7 @@ end
 def save_node()
   current_version = Chef::VERSION
   node_save_safe_version = '0.8'
-  
+
   if current_version >= node_save_safe_version
     if !Chef::Config.solo
       node.save

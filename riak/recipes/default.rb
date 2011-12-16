@@ -37,7 +37,7 @@ package_file =  case node[:riak][:package][:type]
                   case node[:platform]
                   when "debian","ubuntu"
                     include_recipe "riak::iptables"
-                    machines = {"x86_64" => "amd64", "i386" => "i386"} 
+                    machines = {"x86_64" => "amd64", "i386" => "i386"}
                     "#{base_filename.gsub(/\-/, '_')}-1_#{machines[node[:kernel][:machine]]}.deb"
                   when "centos","redhat","fedora","suse"
                     "#{base_filename}-1.#{node[:kernel][:machine]}.rpm"
@@ -72,15 +72,15 @@ when "binary"
   end
 when "source"
   execute "riak-src-unpack" do
-    cwd "/tmp/riak_pkg"    
+    cwd "/tmp/riak_pkg"
     command "tar xvfz #{package_file}"
   end
-  
+
   execute "riak-src-build" do
     cwd "/tmp/riak_pkg/#{base_filename}"
     command "make clean && make all && make rel"
   end
-  
+
   execute "riak-src-install" do
     command "mv /tmp/riak_pkg/#{base_filename}/rel/riak #{node[:riak][:package][:prefix]}"
     not_if "test -d #{node[:riak][:package][:prefix]}/riak"
@@ -123,7 +123,7 @@ template "/etc/riak/vm.args" do
       :vm_args => vm_args,
       :env_vars => env_vars
     })
-  
+
   source "vm.args.erb"
   owner "root"
   mode 0644

@@ -28,7 +28,7 @@ package_file =  case node[:riak][:package][:type]
                 when "binary"
                   case node[:platform]
                   when "debian","ubuntu"
-                    machines = {"x86_64" => "amd64", "i386" => "i386"} 
+                    machines = {"x86_64" => "amd64", "i386" => "i386"}
                     "#{base_filename.gsub(/\-/, '_')}-1_#{machines[node[:kernel][:machine]]}.deb"
                   when "centos","redhat","fedora","suse"
                     "#{base_filename}-1.#{node[:kernel][:machine]}.rpm"
@@ -57,15 +57,15 @@ when "binary"
   end
 when "source"
   execute "riak-inno-src-unpack" do
-    cwd "/tmp/riak_pkg"    
+    cwd "/tmp/riak_pkg"
     command "tar xvfz #{package_file}"
   end
-  
+
   execute "riak-inno-src-build" do
     cwd "/tmp/riak_pkg/#{base_filename}"
     command "make"
   end
-  
+
   execute "riak-inno-src-install" do
     cwd "/tmp/riak_pkg/#{base_filename}"
     command "./rebar install target=#{node[:riak][:package][:prefix]}/riak/lib"

@@ -15,13 +15,13 @@ Opscode cookbooks, http://github.com/opscode/cookbooks/tree/master:
 
 * java
 
-= ATTRIBUTES: 
+= ATTRIBUTES:
 
 = USAGE:
 
 
 = LICENSE and AUTHOR:
-      
+
 Author:: Edmund Haselwanter (<edmund@haselwanter.com>)
 Copyright:: 2009, Edmund Haselwanter
 

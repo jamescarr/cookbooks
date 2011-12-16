@@ -1,6 +1,6 @@
 [rightscale]
 name=RightScale Packages for Enterprise Linux 5
-baseurl=http://mirror.rightscale.com/rightscale_software/centos/5/i386  
+baseurl=http://mirror.rightscale.com/rightscale_software/centos/5/i386
         http://mirror1.rightscale.com/rightscale_software/centos/5/i386
         http://mirror2.rightscale.com/rightscale_software/centos/5/i386
         http://mirror1-int.rightscale.com/rightscale_software/centos/5/i386

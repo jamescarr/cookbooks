@@ -19,19 +19,19 @@ Opscode cookbooks (http://github.com/opscode/cookbooks/tree/master)
 * passenger_apache2
 * apache2
 
-= ATTRIBUTES: 
+= ATTRIBUTES:
 
 * redmine[:dl_id] - download id on the rubyforge page, needs to be updated on new redmine releases.
 * redmine[:version] - release version of redmine to use.
 * redmine[:dir] - directory where redmine will be installed.
-* redmine[:db][:type] - type of database to use, default is sqlite. mysql or postgresql can be used, but the recipe will need to modified, and the next three attributes adjusted. 
+* redmine[:db][:type] - type of database to use, default is sqlite. mysql or postgresql can be used, but the recipe will need to modified, and the next three attributes adjusted.
 * redmine[:db][:user] - database user to connect as, default is redmine.
 * redmine[:db][:password] - password for the user, default is a random string generated with OpenSSL::Random.random_bytes.
 * redmine[:db][:hostname] - hostname of database server, default is localhost.
 
 = USAGE:
 
-Including this recipe in a run_list, role or on a node will install Redmine as a Passenger application under Apache2. 
+Including this recipe in a run_list, role or on a node will install Redmine as a Passenger application under Apache2.
 
   include_recipe "redmine"
 

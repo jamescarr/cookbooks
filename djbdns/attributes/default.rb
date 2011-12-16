@@ -33,13 +33,13 @@ when "ubuntu"
     set[:djbdns][:bin_dir] = "/usr/bin"
   else
     set[:djbdns][:bin_dir] = "/usr/local/bin"
-  end 
+  end
 when "debian"
   if platform_version >= "5.0"
     set[:djbdns][:bin_dir] = "/usr/bin"
   else
     set[:djbdns][:bin_dir] = "/usr/local/bin"
-  end 
+  end
 else
     set[:djbdns][:bin_dir] = "/usr/local/bin"
 end

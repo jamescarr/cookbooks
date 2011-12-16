@@ -1,10 +1,10 @@
 
 require File.join(File.dirname(__FILE__), 'tomcat')
- 
+
 class Chef
   class Resource
     class TomcatManager < Chef::Resource
-        
+
       def initialize(name, collection=nil, node=nil)
         super(name, collection, node)
         @resource_name = :tomcat_manager
@@ -16,9 +16,9 @@ class Chef
         @allowed_actions.push(:stop)
         @allowed_actions.push(:update)
         @allowed_actions.push(:undeploy)
-        
+
       end
-      
+
       def port(arg=nil)
         set_or_return(
           :port,
@@ -26,7 +26,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def host(arg=nil)
         set_or_return(
           :host,
@@ -34,7 +34,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def admin(arg=nil)
         set_or_return(
           :admin,
@@ -42,7 +42,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def password(arg=nil)
         set_or_return(
           :password,
@@ -50,7 +50,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def base(arg=nil)
         set_or_return(
           :base,
@@ -58,7 +58,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def war(arg=nil)
         set_or_return(
           :war,
@@ -66,7 +66,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-      
+
       def path(arg=nil)
         set_or_return(
           :path,
@@ -74,7 +74,7 @@ class Chef
           :kind_of => [ String ]
         )
       end
-            
+
       def tag(arg=nil)
         set_or_return(
           :tag,
@@ -92,18 +92,18 @@ class Chef
       end
 
 
- 
+
     end
   end
 
   class Provider
     class TomcatManager < Chef::Provider
-      
+
       def load_current_resource
         #super
-        #@current_resource 
+        #@current_resource
       end
-      
+
       def action_install
         ensure_tomcat_manager_running
         Chef::Log.info "Running tomcat_manager[#{@new_resource.name}] install"
@@ -115,11 +115,11 @@ class Chef
           Chef::Log.error "Got Exception in manager action" + e
         end
       end
-      
+
       def action_update
         ensure_tomcat_manager_running
         Chef::Log.info "Running tomcat_manager[#{@new_resource.name}] update"
-        tomcat = new_tomcat 
+        tomcat = new_tomcat
         begin
           result = tomcat.update
           (!"200".eql?(result.code) || result.body.include?("FAIL"))?(Chef::Log.error "Ran tomcat_manager[#{@new_resource.name}] update failed: HTTP #{result.code} #{result.message}"):(Chef::Log.info "Ran tomcat_manager[#{@new_resource.name}] update successfully")
@@ -127,11 +127,11 @@ class Chef
           Chef::Log.error "Got Exception in manager action" + e
         end
       end
-      
+
       def action_start
         ensure_tomcat_manager_running
         Chef::Log.info "Running tomcat_manager[#{@new_resource.name}] start"
-        tomcat = new_tomcat 
+        tomcat = new_tomcat
         begin
           result = tomcat.start
           (!"200".eql?(result.code) || result.body.include?("FAIL"))?(Chef::Log.error "Ran tomcat_manager[#{@new_resource.name}] start failed: HTTP #{result.code} #{result.message}"):(Chef::Log.info "Ran tomcat_manager[#{@new_resource.name}] start successfully")
@@ -139,11 +139,11 @@ class Chef
           Chef::Log.error "Got Exception in manager action" + e
         end
       end
-      
+
       def action_stop
         ensure_tomcat_manager_running
         Chef::Log.info "Running tomcat_manager[#{@new_resource.name}] stop"
-        tomcat = new_tomcat 
+        tomcat = new_tomcat
         begin
           result = tomcat.stop
           (!"200".eql?(result.code) || result.body.include?("FAIL"))?(Chef::Log.error "Ran tomcat_manager[#{@new_resource.name}] stop failed: HTTP #{result.code} #{result.message}"):(Chef::Log.info "Ran tomcat_manager[#{@new_resource.name}] stop successfully")
@@ -151,7 +151,7 @@ class Chef
           Chef::Log.error "Got Exception in manager action" + e
         end
       end
-      
+
       def action_undeploy
         ensure_tomcat_manager_running
         Chef::Log.info "Running tomcat_manager[#{@new_resource.name}] undeploy"
@@ -163,7 +163,7 @@ class Chef
           Chef::Log.error "Got Exception in manager action" + e
         end
       end
-      
+
       def new_tomcat(opts={})
         Tomcat.new :host => @new_resource.host,
           :port => @new_resource.port,
@@ -174,7 +174,7 @@ class Chef
           :war => @new_resource.war,
           :name => @new_resource.name,
           :tag => @new_resource.tag
-                   
+
       end
 
       def ensure_tomcat_manager_running
@@ -229,5 +229,5 @@ class Chef
     end
   end
 end
- 
+
 Chef::Platform.platforms[:default].merge! :tomcat_manager => Chef::Provider::TomcatManager

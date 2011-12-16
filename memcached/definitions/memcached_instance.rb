@@ -19,7 +19,7 @@
 
 define :memcached_instance do
   include_recipe "memcached"
-  
+
   runit_service "memcached-#{params[:name]}" do
     options({
       :memory => node[:memcached][:memory],

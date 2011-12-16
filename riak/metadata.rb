@@ -44,7 +44,7 @@ attribute "riak",
 
 attribute "riak/package",
   :type => "hash"
-  
+
 attribute "riak/package/type",
   :display_name => "Package type",
   :description => "Package type for installation (source or binary)",
@@ -59,12 +59,12 @@ attribute "riak/package/version/minor",
   :display_name => "Riak minor version",
   :description => "Minor version of Riak to install.",
   :default => "10"
-     
+
 attribute "riak/package/version/incremental",
   :display_name => "Riak incremental version",
   :description => "Incremental release of Riak to install.",
   :default => "1"
-  
+
 attribute "riak/package/prefix",
   :display_name => "Installation prefix",
   :description => "Installation prefix for source installs",
@@ -74,11 +74,11 @@ attribute "riak/limit_port_range",
   :display_name => "Limit port range",
   :description => "Boolean indicating whether to limit the range of ports used for Erlang node communication.",
   :default => "true"
-  
+
 attribute "riak/package/kernel/inet_dist_listen_min",
   :display_name => "Minimum port for Erlang node communication",
   :default => "6000"
-  
+
 attribute "riak/package/kernel/inet_dist_listen_max",
   :display_name => "Maximum port for Erlang node communication",
   :default => "7999"
@@ -89,7 +89,7 @@ attribute "riak/package/kernel/inet_dist_listen_max",
 attribute "riak/erlang",
   :display_name => "Erlang configuration",
   :type => "hash"
-        
+
 attribute "riak/erlang/node_name",
   :display_name => "Erlang node name",
   :description => "The name of the Erlang node",
@@ -116,7 +116,7 @@ attribute "riak/erlang/async_threads",
 attribute "riak/erlang/env_vars",
   :display_name => "Additional Erlang environment variables",
   :default => "[\"ERL_MAX_PORTS 4096\", \"ERL_FULLSWEEP_AFTER 10\"]"
-  
+
 #
 # riak-core Configuration components
 #
@@ -124,19 +124,19 @@ attribute "riak/core",
   :display_name => "Riak core",
   :description => "Riak core system configuration",
   :type => "hash"
-      
+
 attribute "riak/core/cluster_name",
   :display_name => "Riak cluster name",
   :default => "default"
 
 attribute "riak/core/default_bucket_props",
   :display_name => "Default bucket properties"
-  
+
 attribute "riak/core/gossip_interval",
   :display_name => "Gossip interval",
   :description => "Gossip interval in milliseconds",
   :default => "60000"
-  
+
 attribute "riak/core/target_n_val",
   :display_name => "Target N",
   :default => "3"
@@ -145,7 +145,7 @@ attribute "riak/core/ring_state_dir",
   :display_name => "Ring state directory",
   :description => "The directory on-disk in which to store the ring state (default: data/ring)",
   :default => "/var/lib/riak/ring"
-  
+
 attribute "riak/core/ring_creation_size",
   :display_name => "Ring creation size",
   :description => "The number of partitions into which to divide the hash space (default: 64)",
@@ -176,7 +176,7 @@ attribute "riak/kv/add_paths",
 attribute "riak/kv/handoff_concurrency",
   :display_name => "Handoff concurrency",
   :description => "Number of vnode, per physical node, allowed to perform handoff at once."
- 
+
 attribute "riak/kv/js_vm_count",
   :default_name => "Javascript virtual machine count",
   :description => "How many Javascript virtual machines to start (default: 8)",
@@ -219,7 +219,7 @@ attribute "riak/kv/handoff_port",
   :display_name => "Handoff port",
   :description => "TCP port number for the handoff listener (default: 8099)",
   :default => "8099"
-    
+
 attribute "riak/kv/storage_backend",
   :display_name => "Storage backend",
   :description => "The module name of the storage backend that Riak should use.",
@@ -238,7 +238,7 @@ attribute "riak/kv/storage_backend_options",
 attribute "riak/kv/storage_backend_options/riak_kv_dets_backend_root",
   :display_name => "Data root directory",
   :description => "Directory where the data files will be stored.",
-  :default => "/var/lib/riak/dets"  
+  :default => "/var/lib/riak/dets"
 
 #
 # InnoDB Configuration components
@@ -253,28 +253,28 @@ attribute "riak/kv/storage_backend_options/buffer_pool_size",
 attribute "riak/kv/storage_backend_options/data_home_dir",
   :display_name => "Data home directory",
   :description => "Directory where the system files will be created. All database directories will also be created relative to this path.  Note: The path must end in a / or \\ depending on the platform.",
-  :default => "/var/lib/riak/innodb"  
+  :default => "/var/lib/riak/innodb"
 
-attribute "riak/kv/storage_backend_options/log_group_home_dir",	
+attribute "riak/kv/storage_backend_options/log_group_home_dir",
   :display_name => "Log file path",
   :description => "Path to the directory where the log files will be created.",
   :default => "/var/lib/riak/innodb"
 
-attribute "riak/kv/storage_backend_options/log_buffer_size",	
+attribute "riak/kv/storage_backend_options/log_buffer_size",
   :display_name => "Log buffer size",
   :description => "Size of the in-memory log buffer in bytes.",
   :default => "8388608"
 
-attribute "riak/kv/storage_backend_options/log_files_in_group",	
+attribute "riak/kv/storage_backend_options/log_files_in_group",
   :display_name => "Log files in group",
   :default => "8"
 
-attribute "riak/kv/storage_backend_options/log_file_size",	
+attribute "riak/kv/storage_backend_options/log_file_size",
   :display_name => "Log file size",
   :description => "Log file size in bytes.",
   :default => "268435456"
 
-attribute "riak/kv/storage_backend_options/flush_log_at_trx_commit",	
+attribute "riak/kv/storage_backend_options/flush_log_at_trx_commit",
   :display_name => "Log flush policy",
   :description => "This variable can be set to 0, 1 or 2.\n
                    0 - Force sync of log contents to disk once every second.\n

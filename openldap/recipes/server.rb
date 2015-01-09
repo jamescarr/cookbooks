@@ -2,14 +2,14 @@
 # Cookbook Name:: openldap
 # Recipe:: server
 #
-# Copyright 2008, Opscode, Inc.
+# Copyright 2008-2009, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,7 @@ include_recipe "openldap::client"
 
 case node[:platform]
 when "debian","ubuntu"
-  remote_file "/var/cache/local/preseeding/slapd.seed" do
+  cookbook_file "/var/cache/local/preseeding/slapd.seed" do
     source "slapd.seed"
     mode 0600
     owner "root"
@@ -32,9 +32,9 @@ package "db4.2-util" do
   action :upgrade
 end
 
-remote_file "/var/cache/local/preseeding/slapd.seed" do
+cookbook_file "/var/cache/local/preseeding/slapd.seed" do
   source "slapd.seed"
-  mode 0600 
+  mode 0600
   owner "root"
   group "root"
 end
@@ -47,13 +47,11 @@ package "slapd" do
   action :upgrade
 end
 
-%w{ crt key pem }.each do |pem|
-  remote_file "#{node[:openldap][:ssl_dir]}/#{node[:fqdn]}.#{pem}" do
-    source "ssl/#{node[:fqdn]}.#{pem}"
-    mode 0644
-    owner "root"
-    group "root"
-  end
+cookbook_file "#{node[:openldap][:ssl_dir]}/#{node[:openldap][:server]}.pem" do
+  source "ssl/#{node[:openldap][:server]}.pem"
+  mode 0644
+  owner "root"
+  group "root"
 end
 
 service "slapd" do
@@ -61,21 +59,28 @@ service "slapd" do
 end
 
 case node[:lsb][:codename]
-when "intrepid"
+when "intrepid","jaunty"
+  template "/etc/default/slapd" do
+    source "default_slapd.erb"
+    owner "root"
+    group "root"
+    mode 0644
+  end
+
   directory "#{node[:openldap][:dir]}/slapd.d" do
     recursive true
     owner "openldap"
     group "openldap"
     action :create
   end
-  
+
   execute "slapd-config-convert" do
     command "slaptest -f #{node[:openldap][:dir]}/slapd.conf -F #{node[:openldap][:dir]}/slapd.d/"
     user "openldap"
     action :nothing
     notifies :start, resources(:service => "slapd"), :immediately
   end
-  
+
   template "#{node[:openldap][:dir]}/slapd.conf" do
     source "slapd.conf.erb"
     mode 0640
@@ -85,6 +90,16 @@ when "intrepid"
     notifies :run, resources(:execute => "slapd-config-convert")
   end
 else
+  case node[:platform]
+  when "debian","ubuntu"
+    template "/etc/default/slapd" do
+      source "default_slapd.erb"
+      owner "root"
+      group "root"
+      mode 0644
+    end
+  end
+
   template "#{node[:openldap][:dir]}/slapd.conf" do
     source "slapd.conf.erb"
     mode 0640

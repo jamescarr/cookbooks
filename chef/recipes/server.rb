@@ -10,117 +10,71 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "runit"
+root_group = value_for_platform(
+  "openbsd" => { "default" => "wheel" },
+  "freebsd" => { "default" => "wheel" },
+  "default" => "root"
+)
 
-case node[:platform]
-when "ubuntu"
-  if node[:platform_version].to_f >= 8.10
-    include_recipe "couchdb"
-  end
-when "debian"
-  if node[:platform_version].to_f >= 5.0
-    include_recipe "couchdb"
-  end
-# when "centos","redhat","fedora"
-#   include_recipe "couchdb"
-end
-
-include_recipe "stompserver" 
-include_recipe "apache2"
-include_recipe "apache2::mod_ssl"
-include_recipe "apache2::mod_rails"
 include_recipe "chef::client"
 
-gem_package "chef-server" do
-  version node[:chef][:server_version]
+%w{chef-solr chef-solr-indexer chef-server}.each do |svc|
+  service svc do
+    action :nothing
+  end
 end
 
-if node[:chef][:server_version] >= "0.5.7"
-  gem_package "chef-server-slice" do
-    version node[:chef][:server_version]
+if node[:chef][:webui_enabled]
+  service "chef-server-webui" do
+    action :nothing
   end
 end
 
 template "/etc/chef/server.rb" do
-  owner "chef"
-  mode 0644
   source "server.rb.erb"
-  action :create
-end
-
-directory "/var/log/chef" do
-  owner "chef"
-  group "chef"
-  mode "775"
-end
-
-%w{ openid cache search_index openid/cstore }.each do |dir|
-  directory "#{node[:chef][:path]}/#{dir}" do
-    owner "chef"
-    group "chef"
-    mode "775"
+  owner "root"
+  group root_group
+  mode "644"
+  if node[:chef][:webui_enabled]
+    notifies :restart, resources( :service => "chef-solr", :service => "chef-solr-indexer", :service => "chef-server", :service => "chef-server-webui"), :delayed
+  else
+    notifies :restart, resources( :service => "chef-solr", :service => "chef-solr-indexer", :service => "chef-server"), :delayed
   end
 end
 
-directory "/etc/chef/certificates" do
-  owner "chef"
-  group "chef"
-  mode 0700
+http_request "compact chef couchDB" do
+  action :post
+  url "#{Chef::Config[:couchdb_url]}/chef/_compact"
+  only_if do
+    begin
+      open("#{Chef::Config[:couchdb_url]}/chef")
+      JSON::parse(open("#{Chef::Config[:couchdb_url]}/chef").read)["disk_size"] > 100_000_000
+    rescue OpenURI::HTTPError
+      nil
+    end
+  end
 end
 
-bash "Create SSL Certificates" do
-  cwd "/etc/chef/certificates"
-  code <<-EOH
-  umask 077
-  openssl genrsa 2048 > #{node[:chef][:server_fqdn]}.key
-  openssl req -subj "#{node[:chef][:server_ssl_req]}" -new -x509 -nodes -sha1 -days 3650 -key #{node[:chef][:server_fqdn]}.key > #{node[:chef][:server_fqdn]}.crt
-  cat #{node[:chef][:server_fqdn]}.key #{node[:chef][:server_fqdn]}.crt > #{node[:chef][:server_fqdn]}.pem
-  EOH
-  not_if { File.exists?("/etc/chef/certificates/#{node[:chef][:server_fqdn]}.pem") }
-end
-
-runit_service "chef-indexer" 
-
-template "#{node[:chef][:server_path]}/config.ru" do
-  source "config.ru.erb"
-  owner "chef"
-  group "chef"
-  mode "644"
-  notifies :restart, resources(:service => "apache2")
-end
-
-template "#{node[:chef][:server_path]}/config/environments/production.rb" do
-  source "merb-production.rb.erb"
-  action :create
-  owner "root"
-  group "root"
-  mode "664"
-  notifies :restart, resources(:service => "apache2")
-end
-
-template "#{node[:chef][:server_path]}/config/init.rb" do
-  source "chef-server.init.rb.erb"
-  action :create
-  owner "root"
-  group "root"
-  mode "664"
-  notifies :restart, resources(:service => "apache2")
-end
-
-web_app "chef_server" do
-  docroot "#{node[:chef][:server_path]}/public"
-  template "chef_server.conf.erb"
-  server_name node[:chef][:server_fqdn]
-  server_aliases node[:chef][:server_hostname]
-  gems_path node[:gems_path]
-  version node[:chef][:server_version]
+%w(nodes roles registrations clients data_bags data_bag_items users).each do |view|
+  http_request "compact chef couchDB view #{view}" do
+    action :post
+    url "#{Chef::Config[:couchdb_url]}/chef/_compact/#{view}"
+    only_if do
+      begin
+        open("#{Chef::Config[:couchdb_url]}/chef/_design/#{view}/_info")
+        JSON::parse(open("#{Chef::Config[:couchdb_url]}/chef/_design/#{view}/_info").read)["view_index"]["disk_size"] > 100_000_000
+      rescue OpenURI::HTTPError
+        nil
+      end
+    end
+  end
 end
